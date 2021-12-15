@@ -13,14 +13,20 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
 
     const interval$ = new Observable((observer: Observer<number>) => {
-      observer.next(1);
-      observer.next(2);
-      observer.next(3);
-      observer.error(new Error('Error in app!'))
+      let count = 0;
+      setInterval(() => {
+        observer.next(count++);
+        if (count ===5) {
+          //observer.error(new Error('We reached 5'));
+          observer.complete();
+        }
+      },1000)
     });
 
     interval$.subscribe(
-      (val) => { console.log(val); }
+      (val) => { console.log(val); },
+      (error) => { console.log(error); },
+      () => { console.log('Completed'); }
     )
 
   }
